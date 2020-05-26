@@ -40,7 +40,7 @@ var graph_bars = {
         // Axes label
         ctx.textAlign    = "left";
         ctx.font = "16px arial";
-        ctx.fillText('kWh',10,15);
+        ctx.fillText(viewmode == "energy" ? 'kWh': config.app.currency.value,10,15);
         
         // find out max and min values of data
         
@@ -109,7 +109,9 @@ var graph_bars = {
                     ctx.fillStyle = "#ccccff";
                     
                     ctx.font = "14px arial";
-                    ctx.fillText((data[z][1]*scale).toFixed(0),x,y+20-7);
+		    let decimals = (data[z][1]*scale > 9.9) ? 0: 1;
+		    if (viewmode == "cost") decimals = 2;
+                    ctx.fillText((data[z][1]*scale).toFixed(decimals),x,y+20-7);
                     
                     ctx.font = "14px arial";
                     ctx.fillText(days[dayid],x,plot_height-15);

@@ -393,11 +393,7 @@ function fastupdate(event)
         // 1000W for an hour (x3600) = 3600000 Joules / 3600,000 = 1.0 kWh x 0.15p = 0.15p/kWh (scaling factor is x3600 / 3600,000 = 0.001)
         var cost_now = feeds[use].value*1*config.app.unitcost.value*0.001;
         
-        if (cost_now<1.0) {
-            $("#powernow").html(config.app.currency.value+(feeds[use].value*1*config.app.unitcost.value*0.001).toFixed(3)+"/hr");
-        } else {
-            $("#powernow").html(config.app.currency.value+(feeds[use].value*1*config.app.unitcost.value*0.001).toFixed(2)+"/hr");
-        }
+        $("#powernow").html(config.app.currency.value+(feeds[use].value*1*config.app.unitcost.value*0.001).toFixed(2)+"/hr");
     }
     // Advance view
     if (autoupdate) {
@@ -591,11 +587,10 @@ function slowupdate()
         usetoday_kwh = daily[daily.length-1][1];
     }
     
-    if (usetoday_kwh<100) {
-        $("#usetoday").html((usetoday_kwh).toFixed(1));
-    } else {
-        $("#usetoday").html((usetoday_kwh).toFixed(0));
-    }
+    let decimals = (usetoday_kwh<100) ? 1: 0;
+    if (viewmode == "cost") decimals = 2;
+
+    $("#usetoday").html((usetoday_kwh).toFixed(decimals));
 
     graph_bars.draw('placeholder_kwhd',[daily]);
     $(".ajax-loader").hide();
